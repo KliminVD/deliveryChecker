@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Мои посылки</title>
+</head>
+<body>
+<h2>Мои посылки</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Код отслеживания</th>
+    <th>Статус</th>
+    <th>Локация</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="parcel : ${parcels}">
+    <td th:text="${parcel.trackingCode}"></td>
+    <td th:text="${parcel.status}"></td>
+    <td th:text="${parcel.location}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

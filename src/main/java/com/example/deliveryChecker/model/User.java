@@ -1,11 +1,13 @@
 package com.example.deliveryChecker.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+@NoArgsConstructor
 @Table(name = "user")
 @Entity
 public class User implements UserDetails {
@@ -14,14 +16,14 @@ public class User implements UserDetails {
     private Long id;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String role; // "USER" or "ADMIN"
-
     @Column(nullable = false)
     private boolean active;
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Parcel> parcels;
 
     public User(Long id, String password, String email, String role, boolean active) {
         this.id = id;
@@ -31,8 +33,6 @@ public class User implements UserDetails {
         this.active = active;
     }
 
-    public User() {
-    }
 
     public Long getId() {
         return id;
@@ -49,6 +49,7 @@ public class User implements UserDetails {
     public boolean isActive() {
         return active;
     }
+
 
 
     public void setId(Long id) {
@@ -79,12 +80,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
@@ -95,12 +96,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(() -> role.toUpperCase());
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override

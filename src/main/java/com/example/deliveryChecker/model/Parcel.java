@@ -1,5 +1,7 @@
 package com.example.deliveryChecker.model;
+
 import jakarta.persistence.*;
+
 @Table(name = "parcel")
 @Entity
 public class Parcel {
@@ -16,20 +18,24 @@ public class Parcel {
     @Column(nullable = false)
     private String location;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Parcel() {}
+
     public Parcel(Long id, String trackingCode, String status, String location, User user) {
         this.id = id;
         this.trackingCode = trackingCode;
         this.status = status;
         this.location = location;
+        this.user = user;
     }
 
     // Getters and setters
     public Long getId() {
         return id;
     }
-
-
 
     public void setId(Long id) {
         this.id = id;
@@ -57,5 +63,13 @@ public class Parcel {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -5,6 +5,8 @@ import com.example.deliveryChecker.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -16,13 +18,19 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean createUser(User user){
-        String email = user.getEmail();
-        if (userRepository.findByEmail(email) != null) return false;
-        user.setActive(true);
+    // Создание нового пользователя
+    public boolean createUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return false; // Пользователь с таким email уже существует
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("USER");
+        user.setActive(true);
         userRepository.save(user);
         return true;
+    }
+
+    // Поиск пользователя по email
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

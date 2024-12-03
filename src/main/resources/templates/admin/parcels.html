@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Управление посылками</title>
+</head>
+<body>
+<h2>Управление посылками</h2>
+
+<form th:action="@{/admin/parcels/search}" method="get">
+  <input type="text" name="email" placeholder="Поиск по email пользователя" />
+  <button type="submit">Поиск</button>
+</form>
+
+<table>
+  <thead>
+  <tr>
+    <th>Код отслеживания</th>
+    <th>Статус</th>
+    <th>Локация</th>
+    <th>Действия</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="parcel : ${parcels}">
+    <td th:text="${parcel.trackingCode}"></td>
+    <td th:text="${parcel.user.getEmail()}"></td>
+    <td th:text="${parcel.status}"></td>
+    <td th:text="${parcel.location}"></td>
+    <td>
+      <a th:href="@{/admin/parcels/edit/{id}(id=${parcel.id})}">Редактировать</a>
+      <a th:href="@{/admin/parcels/delete/{id}(id=${parcel.id})}">Удалить</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<a href="/admin/parcels/add">Добавить новую посылку</a>
+</body>
+</html>
