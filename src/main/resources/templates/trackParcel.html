@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Track Parcel</title>
+</head>
+<body>
+<h2>Track Your Parcel</h2>
+<form th:action="@{/trackParcel}" method="get">
+    <label for="trackingCode">Tracking Code</label>
+    <input type="text" id="trackingCode" name="trackingCode" required />
+    <button type="submit">Track</button>
+</form>
+
+<div th:if="${parcel}">
+    <p><strong>Status:</strong> <span th:text="${parcel.status}"></span></p>
+    <p><strong>Location:</strong> <span th:text="${parcel.location}"></span></p>
+</div>
+<div th:if="${error}">
+    <p th:text="${error}"></p>
+</div>
+</body>
+</html>
