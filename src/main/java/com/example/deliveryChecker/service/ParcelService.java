@@ -11,9 +11,11 @@ import java.util.Optional;
 public class ParcelService {
 
     private final ParcelRepository parcelRepository;
+    private final EmailService emailService;
 
-    public ParcelService(ParcelRepository parcelRepository) {
+    public ParcelService(ParcelRepository parcelRepository, EmailService emailService) {
         this.parcelRepository = parcelRepository;
+        this.emailService = emailService;
     }
 
     // Получение посылки по трек-коду
@@ -34,7 +36,17 @@ public class ParcelService {
 
     // Добавление новой посылки
     public void createParcel(Parcel parcel) {
-        parcelRepository.save(parcel);
+        if (parcelRepository.findByTrackingCode(parcel.getTrackingCode()).isEmpty()){
+            parcelRepository.save(parcel);
+            String email = parcel.getUser().getEmail();
+            String subject = "К вам едет посылочка";
+            String text = String.format(
+                    "Здравствуйте, %s!<br><br>К Вам была отправлена посылка с номером <strong>%s</strong>.<br><br>Статус посылки - <strong>%s</strong><br><br>Спасибо, что пользуетесь нашими услугами! Статус посылки можно отследить на нашем сайте.",
+                    parcel.getUser().getUsername(), parcel.getTrackingCode(), parcel.getStatus()
+            );
+            emailService.sendEmail(email, subject, text);
+        }
+
     }
 
     // Обновление состояния и местоположения посылки
@@ -45,6 +57,15 @@ public class ParcelService {
             parcel.setStatus(status);
             parcel.setLocation(location);
             parcelRepository.save(parcel);
+            // Отправка уведомления пользователю\
+            String email = parcel.getUser().getEmail();
+            String subject = "Статус вашей посылки изменился";
+            String text = String.format(
+                    "Здравствуйте, %s!<br><br>Статус вашей посылки с номером <strong>%s</strong> изменился на <strong>%s</strong>. На данный момент посылка находится в <strong>%s</strong>.<br><br>Спасибо, что пользуетесь нашими услугами!",
+                    parcel.getUser().getUsername(), parcel.getTrackingCode(), status, location
+            );
+            emailService.sendEmail(email, subject, text);
+
         }
     }
 
