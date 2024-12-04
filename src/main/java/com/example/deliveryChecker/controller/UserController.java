@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -39,7 +40,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String createUser(User user, Model model) {
+    public String createUser(@RequestParam String email,
+                             @RequestParam String password,
+                             @RequestParam String role,
+                             Model model) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRole(role);
         if (userService.createUser(user)) {
             return "redirect:/login";
         } else {

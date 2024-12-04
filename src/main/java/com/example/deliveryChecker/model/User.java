@@ -1,13 +1,11 @@
 package com.example.deliveryChecker.model;
 
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-@NoArgsConstructor
 @Table(name = "user")
 @Entity
 public class User implements UserDetails {
@@ -19,9 +17,9 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
-    private String role; // "USER" or "ADMIN"
+    private String role;
     @Column(nullable = false)
-    private boolean active;
+    private boolean active = true;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Parcel> parcels;
 
@@ -32,7 +30,7 @@ public class User implements UserDetails {
         this.role = role;
         this.active = active;
     }
-
+    public User(){}
 
     public Long getId() {
         return id;
