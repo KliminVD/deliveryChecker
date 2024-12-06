@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Добавить посылку</title>
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+<h2>Добавить новую посылку</h2>
+<form th:action="@{/admin/parcels/add}" method="post">
+  <label for="trackingCode">Код отслеживания:</label>
+  <input type="text" id="trackingCode" name="trackingCode" required />
+
+  <label for="email">Почта:</label>
+  <input type="text" id="email" name="email" required />
+
+  <label for="status">Статус:</label>
+  <input type="text" id="status" name="status" required />
+
+  <label for="location">Местоположение:</label>
+  <input type="text" id="location" name="location" required />
+
+  <button type="submit">Добавить</button>
+</form>
+<a th:href="@{/admin/parcels}">Вернуться к списку посылок</a>
+</body>
+</html>

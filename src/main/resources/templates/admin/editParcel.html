@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Редактировать посылку</title>
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+<h2>Редактировать посылку</h2>
+<form th:action="@{'/admin/parcels/edit/' + ${parcel.id}}" method="post">
+  <input type="hidden" th:value="${parcel.id}" name="id" />
+
+  <label for="trackingCode">Код отслеживания:</label>
+  <input type="text" id="trackingCode" name="trackingCode" th:value="${parcel.trackingCode}" readonly />
+
+  <label for="status">Статус:</label>
+  <input type="text" id="status" name="status" th:value="${parcel.status}" required />
+
+  <label for="location">Местоположение:</label>
+  <input type="text" id="location" name="location" th:value="${parcel.location}" required />
+
+  <button type="submit">Сохранить изменения</button>
+</form>
+<a th:href="@{/admin/parcels}">Вернуться к списку посылок</a>
+</body>
+</html>
