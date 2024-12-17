@@ -14,14 +14,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 @Configuration
 public class SecurityConfig {
-
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     private final CustomUserDetailService customUserDetailsService;
-
     public SecurityConfig(CustomUserDetailService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -47,15 +44,12 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .userDetailsService(customUserDetailsService);
-
         return http.build();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
-
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, authentication) -> {

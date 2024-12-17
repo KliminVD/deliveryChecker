@@ -1,5 +1,4 @@
 package com.example.deliveryChecker.controller;
-
 import com.example.deliveryChecker.model.Parcel;
 import com.example.deliveryChecker.model.User;
 import com.example.deliveryChecker.service.ParcelService;
@@ -17,33 +16,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-
 @Controller
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final ParcelService parcelService;
-
     public UserController(UserService userService, ParcelService parcelService) {
         this.userService = userService;
-        this.parcelService = parcelService;
-    }
-
+        this.parcelService = parcelService;}
     @GetMapping("/logout")
-    public String logout(){
-        return "home";
-    }
-
+    public String logout(){return "home";}
     @GetMapping("/login")
     public String login() {
         return "login";
     }
-
     @GetMapping("/register")
     public String registration() {
         return "register";
     }
-
     @PostMapping("/register")
     public String createUser(@RequestParam String email,
                              @RequestParam String password,
@@ -54,17 +44,13 @@ public class UserController {
         user.setPassword(password);
         user.setRole(role);
         if (userService.createUser(user)) {
-            return "redirect:/login";
-        } else {
+            return "redirect:/login";}
+        else {
             model.addAttribute("error", "Registration failed. Please try again.");
-            return "register";
-        }
-    }
+            return "register";}}
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/parcels")
     public String userParcels(Model model, @AuthenticationPrincipal User user) {
         List<Parcel> parcels = parcelService.findAllByUserEmail(user.getEmail());
         model.addAttribute("parcels", parcels);
-        return "user/parcels";
-    }
-}
+        return "user/parcels";}}
